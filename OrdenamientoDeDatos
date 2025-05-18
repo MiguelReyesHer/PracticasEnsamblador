@@ -1,0 +1,64 @@
+;REYES HERNANDEZ MIGUEL ANGEL
+;EJERCICIO 4: ORDENAR DE UNA LISTA DE 5 PERSONAS LAS CALIFICACIONES 69,87,96,45 Y 75
+
+;----------------------------- PSEUDOCÓDIGO ENSAMBLADOR -----------------------------
+;CONTEO=5
+;ALTO=0
+;
+;REPETIR  
+;    IF (NEXT>MAX)
+;    THEN 
+;        MAX=NEXT
+;    END IF
+;
+;INCREMEMNTAR EL APUNTADOR
+;DISMINUIR EL CONTADOR
+;MAX DEBE SER EL VALOR MÁS LATO
+
+;---------------------------- PSEUDOCODIGO C -----------------------------
+;unsigned int myData[5]={69,87,96,45,75};
+;unsigned int conteo=5;
+;unsigned int max=0;
+;unsigned int next;
+;unsigned int *pointer=mydata;
+;
+;do{
+;    next=*pointer;
+;    if (max<next);
+;        max=next;
+;    pointer++;
+;    conteo--;
+;    end if
+;}
+;while (count!=0);
+
+;-------------------------- PROGRAMA ENSAMBLADOR --------------------------
+;BUSCAR EL NÚMERO MAS GRANDE
+CONTEO RN R0                        ;RENOMBRAMOS EL REGISTRO R0 A CONTEO
+MAX RN R1                           ;RENOMBRAMOS EL REGISTRO R1 A MAX
+POINTER RN R2
+NEXT RN R3
+
+    AREA OrdenamientoDeDatos, DATA, READONLY
+    MYDATA DCD 69,87,96,45,75           ;DCD DEFINE CONSTANT DATA PARA 32 BITS, ÚTIL EN UNA LISTA COMO ESTA
+
+    AREA OrdenamientoDeDatos, CODE, READONLY
+    ENTRY
+
+___main 
+    MOV CONTEO, #5
+    MOV MAX, #0
+    LDR POINTER, =MYDATA            ;POINTER TIENE LA DIRECCIÓN DEL PRIMER DATO
+    
+AGAIN
+    LDR NEXT,[POINTER]              ;CARGA NEXT CON EL VALOR DEL APUNTADOR
+    CMP MAX, NEXT                   ;USA FLAGS, EN ESTA CASO NOS INTERESA LA CARRY PARA BHS; SI NEXT>MAX, MAX TOMA ESE VALOR EN ESTA LÍNEA DE CÓDIGO
+    BHS CNTO                        ;SI MAX ES MAYOR QUE NEXT, SALTA A CNTO
+
+CNTO
+    ADD POINTER, POINTER, #4        ;AUMENTA EL APUNTADOR EN 4, YA QUE CADA DATO OCUPA 4 BYTES
+    SUBS CONTEO, CONTEO, #1
+    BNE AGAIN                       ;SI CONTEO NO ES CERO, SALTA A AGAIN
+
+HERE B HERE
+    END
